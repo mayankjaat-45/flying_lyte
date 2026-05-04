@@ -1,14 +1,14 @@
+// src/services/sendHotelChangeRequest.js
 import { privateApi } from "./api";
 
-export const cancelHotelBooking = async (bookingId) => {
-  const response = await privateApi.post(
+export const sendHotelChangeRequest = async (BookingId, remarks = "") => {
+  const { data } = await privateApi.post(
     "/api/hotels/hotel/send-change-request/",
     {
-      BookingId: bookingId,
+      BookingId,
+      Remarks: remarks || "Customer requested hotel booking change",
     },
   );
 
-  console.log("AXIOS RAW RESPONSE:", response);
-
-  return response.data; // ⚠️ VERY IMPORTANT
+  return data;
 };

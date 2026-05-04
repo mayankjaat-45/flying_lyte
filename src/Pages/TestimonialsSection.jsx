@@ -5,7 +5,7 @@ import TestimonialCard from "../components/Testimonials/TestimonialCard";
 
 const TestimonialsSection = () => {
   return (
-    <section className="relative py-24 bg-[var(--bg-main)] overflow-hidden">
+    <section className="relative py-24 bg-(--bg-main) overflow-hidden">
       {/* Subtle glow */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(234,168,42,0.08),transparent_65%)]" />
 
@@ -16,9 +16,9 @@ const TestimonialsSection = () => {
           viewport={{ once: true }}
           className="
             text-center
-            font-[var(--font-heading)]
+            font-(--font-heading)
             text-3xl sm:text-4xl
-            text-[var(--gold-main)]
+            text-(--gold-main)
             mb-16
           "
         >

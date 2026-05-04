@@ -6,7 +6,9 @@ import { cancelHotelBooking } from "../../../services/cancelHotelBooking";
 const HotelBookingSuccess = () => {
   const navigate = useNavigate();
   const location = useLocation();
-
+  const [changeLoading, setChangeLoading] = useState(false);
+  const [changeMsg, setChangeMsg] = useState(null);
+  const [changeError, setChangeError] = useState(null);
   const [booking, setBooking] = useState(null);
   const [hotel, setHotel] = useState(null);
   const [guestDetails, setGuestDetails] = useState([]);
@@ -56,27 +58,31 @@ const HotelBookingSuccess = () => {
   };
 
   /* ================= CANCEL ================= */
-  const handleCancelBooking = async () => {
-    const confirmCancel = window.confirm("Are you sure?");
-    if (!confirmCancel) return;
+  const handleChangeRequest = async () => {
+    const remarks = window.prompt("Enter change request reason");
+
+    if (!remarks) return;
 
     try {
-      setCancelLoading(true);
-      setCancelError(null);
+      setChangeLoading(true);
+      setChangeMsg(null);
+      setChangeError(null);
 
-      const res = await cancelHotelBooking(booking.BookingId);
+      const res = await sendHotelChangeRequest(booking.BookingId, remarks);
 
-      if (res?.success) {
-        setCancelData(res.data);
-      } else if (res?.RefundedAmount) {
-        setCancelData(res);
+      if (res?.success || res?.Status === 1 || res?.message) {
+        setChangeMsg(res?.message || "Change request sent successfully");
       } else {
-        setCancelError(res?.message || "Cancellation failed");
+        setChangeError(res?.Error?.ErrorMessage || "Change request failed");
       }
     } catch (err) {
-      setCancelError("Something went wrong");
+      setChangeError(
+        err?.response?.data?.message ||
+          err?.response?.data?.Error?.ErrorMessage ||
+          "Something went wrong",
+      );
     } finally {
-      setCancelLoading(false);
+      setChangeLoading(false);
     }
   };
 
@@ -170,10 +176,10 @@ const HotelBookingSuccess = () => {
             </button>
 
             <button
-              onClick={handleCancelBooking}
-              className="px-5 py-2 bg-red-500 rounded-lg"
+              onClick={handleChangeRequest}
+              className="px-5 py-2 bg-yellow-400 text-black rounded-lg"
             >
-              {cancelLoading ? "Cancelling..." : "Cancel Booking"}
+              {changeLoading ? "Sending..." : "Send Change Request"}
             </button>
           </div>
         </div>
