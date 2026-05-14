@@ -177,13 +177,12 @@ Thailand continues to grow as one of the biggest destinations for EDM festivals 
     author: "FlyingLyte Team",
     date: "14 May 2026",
     image:
-      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1200",
+      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=1200&auto=format&fit=crop&q=80",
 
     shortDescription:
       "Explore Thailand’s exciting nightlife scene with beach clubs, rooftop bars, EDM festivals, luxury parties, and unforgettable travel experiences.",
 
     description: `
-
 Thailand is one of the world’s most exciting destinations for nightlife lovers and party travelers. From beach clubs in Phuket to rooftop bars in Bangkok and party streets in Pattaya, the country offers nonstop entertainment for travelers looking for unforgettable nights.
 
 Here is the ultimate Thailand nightlife guide for 2026.
