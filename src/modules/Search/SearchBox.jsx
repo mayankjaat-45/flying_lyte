@@ -6,7 +6,6 @@ import { Plane, Hotel, Sparkles, ArrowRight } from "lucide-react";
 const SearchBox = () => {
   const [activeTab, setActiveTab] = useState("flights");
   const navigate = useNavigate();
-
   const ComingSoonCard = ({ type }) => {
     const isFlight = type === "flights";
 
