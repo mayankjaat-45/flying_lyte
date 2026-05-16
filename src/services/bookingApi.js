@@ -7,8 +7,9 @@ export const getPackageBookings = async () => {
 };
 
 export const getFlightBookings = async () => {
-  const res = await privateApi.get("/api/flight/bookings/my/");
-  return res.data?.data || res.data || [];
+  const res = await privateApi.get("/api/airlines/my-bookings/");
+
+  return Array.isArray(res.data) ? res.data : res.data?.data || [];
 };
 
 export const getHotelBookings = async () => {
