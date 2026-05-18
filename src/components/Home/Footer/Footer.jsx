@@ -1,10 +1,19 @@
 import React from "react";
-import { Facebook, Instagram, Twitter, Mail, Phone } from "lucide-react";
+import {
+  Facebook,
+  Instagram,
+  Twitter,
+  Mail,
+  Phone,
+  MapPin,
+} from "lucide-react";
 import { footerLinks } from "./footerLinks";
 import logo from "../../../../public/images/flying_logo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
   return (
     <footer className="bg-gray-900 text-gray-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-14">
@@ -14,9 +23,11 @@ const Footer = () => {
           <div className="md:col-span-2">
             <img
               src={logo}
+              alt="FlyingLyte Logo"
               className="w-42 md:w-52 cursor-pointer"
               onClick={() => navigate("/")}
             />
+
             <p className="mt-3 text-sm leading-relaxed text-gray-400">
               FlyingLyte helps you book flights, hotels, and holiday packages at
               the best prices with a fast and secure experience.
@@ -24,6 +35,12 @@ const Footer = () => {
 
             {/* Contact */}
             <div className="mt-4 space-y-2 text-sm">
+              {/* Address */}
+              <div className="flex items-start gap-2 text-gray-400">
+                <MapPin size={16} className="mt-0.5 shrink-0" />
+                <span>316, Basement, Gagan Vihar, Delhi-110051</span>
+              </div>
+
               {/* Email */}
               <a
                 href="mailto:info@flyinglyte.com"
@@ -58,6 +75,7 @@ const Footer = () => {
               <h3 className="text-white font-semibold capitalize mb-4">
                 {section}
               </h3>
+
               <ul className="space-y-2 text-sm">
                 {links.map((link) => (
                   <li key={link.name}>
@@ -116,12 +134,17 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="text-center text-xs -bottom-1">
+          <div className="text-center text-xs mt-5">
             <p>
               Designed & Developed By
-              <Link to="https://www.infrivasolutions.com" className="pl-1">
+              <a
+                href="https://www.infrivasolutions.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pl-1 hover:text-white transition"
+              >
                 Infriva Solutions
-              </Link>
+              </a>
             </p>
           </div>
         </div>
