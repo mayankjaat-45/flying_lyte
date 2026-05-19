@@ -481,7 +481,7 @@ Please share more details.
                 onClick={handleWhatsappInquiry}
                 className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2"
               >
-                WhatsApp Enquiry
+                Enquire for Customized package & Price
               </button>
             </div>
           </motion.div>
@@ -643,7 +643,7 @@ Please share more details.
                   onClick={handleWhatsappInquiry}
                   className="bg-green-500 hover:bg-green-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl font-semibold w-full text-sm md:text-base transition"
                 >
-                  WhatsApp Enquiry
+                  Enquire for Customized package & Price
                 </button>
               </div>
 
