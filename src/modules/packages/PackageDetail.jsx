@@ -471,23 +471,24 @@ Please share more details.
           >
             <div className="space-y-3">
               <button
+                type="button"
                 onClick={handleBookClick}
-                className="w-full bg-linear-to-r from-start to-end text-black font-semibold py-3 rounded-xl"
+                className="w-full bg-linear-to-r from-start to-end text-black font-semibold py-3 rounded-xl hover:opacity-90 transition"
               >
                 Book Now
               </button>
 
               <button
+                type="button"
                 onClick={handleWhatsappInquiry}
-                className="w-full bg-green-800 hover:bg-green-900 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2"
+                className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2"
               >
                 Enquire Now
               </button>
 
-              <span className="text-md font-semibold text-white ">
-                {" "}
-                ** For Customized Package And Price
-              </span>
+              <p className="text-sm md:text-base font-semibold text-white/90 text-center leading-relaxed">
+                For customized package and price, please enquire on WhatsApp.
+              </p>
             </div>
           </motion.div>
         </div>
