@@ -306,7 +306,7 @@ const PackageDetails = () => {
     const packageName = pkg.tour_name || pkg.title || "Travel Package";
     const destination = pkg.Country_City_Multicity || "N/A";
     const duration = `${pkg.days || ""} Days / ${pkg.Number_of_nights || ""} Nights`;
-    const price = Number(pkg.price || 0).toLocaleString();
+    //const price = Number(pkg.price || 0).toLocaleString();
     const packageUrl = `${SITE_URL}/packages/${pkg.slug || slug}`;
 
     const message = `
@@ -317,7 +317,6 @@ I want to inquire about this travel package:
 Package: ${packageName}
 Destination: ${destination}
 Duration: ${duration}
-Starting Price: ₹${price} per person
 Package Link: ${packageUrl}
 
 Please share more details.
@@ -482,7 +481,7 @@ Please share more details.
                 onClick={handleWhatsappInquiry}
                 className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2"
               >
-                WhatsApp Inquiry
+                WhatsApp Enquiry
               </button>
             </div>
           </motion.div>
@@ -644,7 +643,7 @@ Please share more details.
                   onClick={handleWhatsappInquiry}
                   className="bg-green-500 hover:bg-green-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl font-semibold w-full text-sm md:text-base transition"
                 >
-                  WhatsApp Inquiry
+                  WhatsApp Enquiry
                 </button>
               </div>
 
