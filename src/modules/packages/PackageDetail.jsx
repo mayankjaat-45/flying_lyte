@@ -14,6 +14,37 @@ const fetchPackage = async (slug) => {
   return res.data?.data || res.data;
 };
 
+//whatsApp Enquiry
+const WHATSAPP_NUMBER = "919667455591";
+
+const handleWhatsappInquiry = () => {
+  const packageName = pkg.tour_name || pkg.title || "Travel Package";
+  const destination = pkg.Country_City_Multicity || "N/A";
+  const duration = `${pkg.days || ""} Days / ${pkg.Number_of_nights || ""} Nights`;
+  const price = Number(pkg.price || 0).toLocaleString();
+  const packageUrl = `${SITE_URL}/packages/${pkg.slug || slug}`;
+
+  const message = `
+Hello FlyingLyte,
+
+I want to inquire about this travel package:
+
+Package: ${packageName}
+Destination: ${destination}
+Duration: ${duration}
+Starting Price: ₹${price} per person
+Package Link: ${packageUrl}
+
+Please share more details.
+`;
+
+  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    message,
+  )}`;
+
+  window.open(whatsappUrl, "_blank");
+};
+
 const PackageDetails = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
@@ -439,12 +470,21 @@ const PackageDetails = () => {
             transition={{ duration: 0.25 }}
             className="bg-(--bg-card) p-4 md:p-6 rounded-xl text-center"
           >
-            <button
-              onClick={handleBookClick}
-              className="bg-linear-to-r from-start to-end text-black px-4 md:px-6 py-2 md:py-3 rounded-xl font-semibold w-full text-sm md:text-base"
-            >
-              Book Now
-            </button>
+            <div className="space-y-3">
+              <button
+                onClick={handleBookClick}
+                className="w-full bg-linear-to-r from-start to-end text-black font-semibold py-3 rounded-xl"
+              >
+                Book Now
+              </button>
+
+              <button
+                onClick={handleWhatsappInquiry}
+                className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2"
+              >
+                WhatsApp Inquiry
+              </button>
+            </div>
           </motion.div>
         </div>
 
@@ -592,12 +632,21 @@ const PackageDetails = () => {
                 ₹{Number(totalPrice).toLocaleString()}
               </p>
 
-              <button
-                onClick={handleBookClick}
-                className="w-full bg-linear-to-r from-start to-end text-black font-semibold py-3 rounded-xl"
-              >
-                Book Now
-              </button>
+              <div className="space-y-2">
+                <button
+                  onClick={handleBookClick}
+                  className="bg-linear-to-r from-start to-end text-black px-4 md:px-6 py-2 md:py-3 rounded-xl font-semibold w-full text-sm md:text-base"
+                >
+                  Book Now
+                </button>
+
+                <button
+                  onClick={handleWhatsappInquiry}
+                  className="bg-green-500 hover:bg-green-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl font-semibold w-full text-sm md:text-base transition"
+                >
+                  WhatsApp Inquiry
+                </button>
+              </div>
 
               <div className="mt-6 text-xs md:text-sm text-gray-400 space-y-2">
                 <p>✔ Instant confirmation</p>
