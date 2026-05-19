@@ -14,37 +14,6 @@ const fetchPackage = async (slug) => {
   return res.data?.data || res.data;
 };
 
-//whatsApp Enquiry
-const WHATSAPP_NUMBER = "919667455591";
-
-const handleWhatsappInquiry = () => {
-  const packageName = pkg.tour_name || pkg.title || "Travel Package";
-  const destination = pkg.Country_City_Multicity || "N/A";
-  const duration = `${pkg.days || ""} Days / ${pkg.Number_of_nights || ""} Nights`;
-  const price = Number(pkg.price || 0).toLocaleString();
-  const packageUrl = `${SITE_URL}/packages/${pkg.slug || slug}`;
-
-  const message = `
-Hello FlyingLyte,
-
-I want to inquire about this travel package:
-
-Package: ${packageName}
-Destination: ${destination}
-Duration: ${duration}
-Starting Price: ₹${price} per person
-Package Link: ${packageUrl}
-
-Please share more details.
-`;
-
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    message,
-  )}`;
-
-  window.open(whatsappUrl, "_blank");
-};
-
 const PackageDetails = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
@@ -328,6 +297,37 @@ const PackageDetails = () => {
         ratingCount: "1",
       },
     }),
+  };
+
+  //whatsApp Enquiry
+  const WHATSAPP_NUMBER = "919667455591";
+
+  const handleWhatsappInquiry = () => {
+    const packageName = pkg.tour_name || pkg.title || "Travel Package";
+    const destination = pkg.Country_City_Multicity || "N/A";
+    const duration = `${pkg.days || ""} Days / ${pkg.Number_of_nights || ""} Nights`;
+    const price = Number(pkg.price || 0).toLocaleString();
+    const packageUrl = `${SITE_URL}/packages/${pkg.slug || slug}`;
+
+    const message = `
+Hello FlyingLyte,
+
+I want to inquire about this travel package:
+
+Package: ${packageName}
+Destination: ${destination}
+Duration: ${duration}
+Starting Price: ₹${price} per person
+Package Link: ${packageUrl}
+
+Please share more details.
+`;
+
+    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+      message,
+    )}`;
+
+    window.open(whatsappUrl, "_blank");
   };
 
   return (
