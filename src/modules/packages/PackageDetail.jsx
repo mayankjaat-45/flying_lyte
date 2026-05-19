@@ -481,13 +481,15 @@ Please share more details.
               <button
                 type="button"
                 onClick={handleWhatsappInquiry}
-                className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2"
+                className="w-full bg-green-800 hover:bg-green-900 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2"
               >
                 Enquire Now
               </button>
 
               <p className="text-sm md:text-base font-semibold text-white/90 text-center leading-relaxed">
-                For customized package and price, please enquire on WhatsApp.
+                <span className="inline-block px-2 py-1 rounded-lg bg-(--gold-main)/15 text-(--gold-main) border border-(--gold-main)/30">
+                  customized package and price
+                </span>
               </p>
             </div>
           </motion.div>
