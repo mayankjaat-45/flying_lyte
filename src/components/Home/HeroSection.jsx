@@ -21,7 +21,7 @@ const HeroSection = () => {
         {/* Hero Heading */}
         <div className="space-y-3">
           <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold leading-tight">
-            Smart Trips. by Anmol
+            Smart Trips.
             <br />
             <span className="bg-linear-to-r from-start to-end bg-clip-text text-transparent">
               Zero hassle.
