@@ -479,7 +479,7 @@ Please share more details.
 
               <button
                 onClick={handleWhatsappInquiry}
-                className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2"
+                className="w-full bg-green-800 hover:bg-green-900 text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2"
               >
                 Enquire Now
               </button>
@@ -646,7 +646,7 @@ Please share more details.
 
                 <button
                   onClick={handleWhatsappInquiry}
-                  className="bg-green-500 hover:bg-green-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl font-semibold w-full text-sm md:text-base transition"
+                  className="bg-green-800 hover:bg-green-900 text-white px-4 md:px-6 py-2 md:py-3 rounded-xl font-semibold w-full text-sm md:text-base transition"
                 >
                   Enquire Now
                 </button>
