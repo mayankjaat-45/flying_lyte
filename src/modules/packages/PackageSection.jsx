@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
@@ -21,29 +22,79 @@ const fetchPackages = async (page = 1, limit = 8, destination = "") => {
 
   return {
     packages,
-    totalPages: data?.total_pages || Math.ceil((data?.count || 0) / limit), // ✅ FIX
+    totalPages: data?.total_pages || Math.ceil((data?.count || 0) / limit),
     currentPage: data?.current_page || page,
     next: data?.next,
     previous: data?.previous,
   };
 };
-const PackageSection = ({ limit = 8 }) => {
-  const [page, setPage] = useState(1);
-  const [destination, setDestination] = useState("");
-  const [debouncedDestination, setDebouncedDestination] = useState("");
 
-  // Debounce search
+const PackageSection = ({ limit = 8 }) => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const pageFromUrl = Number(searchParams.get("page")) || 1;
+  const destinationFromUrl = searchParams.get("destination") || "";
+
+  const [page, setPage] = useState(pageFromUrl);
+  const [destination, setDestination] = useState(destinationFromUrl);
+  const [debouncedDestination, setDebouncedDestination] =
+    useState(destinationFromUrl);
+
+  const updateUrl = (newPage, newDestination = debouncedDestination) => {
+    const params = new URLSearchParams();
+
+    if (newPage > 1) {
+      params.set("page", String(newPage));
+    }
+
+    if (newDestination?.trim()) {
+      params.set("destination", newDestination.trim());
+    }
+
+    const queryString = params.toString();
+
+    navigate(queryString ? `/packages?${queryString}` : "/packages");
+  };
+
+  const handlePageChange = (newPage) => {
+    const validPage = Math.max(1, newPage);
+
+    setPage(validPage);
+    updateUrl(validPage);
+  };
+
+  // ✅ Sync state if URL changes
+  useEffect(() => {
+    setPage(pageFromUrl);
+    setDestination(destinationFromUrl);
+    setDebouncedDestination(destinationFromUrl);
+  }, [pageFromUrl, destinationFromUrl]);
+
+  // ✅ Debounce search + update URL
   useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedDestination(destination.trim()); // ✅ trim spaces
+      const trimmedDestination = destination.trim();
+
+      setDebouncedDestination(trimmedDestination);
       setPage(1);
+
+      const params = new URLSearchParams();
+
+      if (trimmedDestination) {
+        params.set("destination", trimmedDestination);
+      }
+
+      const queryString = params.toString();
+
+      navigate(queryString ? `/packages?${queryString}` : "/packages");
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [destination]);
+  }, [destination, navigate]);
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["packages", page, debouncedDestination, limit], // ✅ IMPORTANT
+    queryKey: ["packages", page, debouncedDestination, limit],
     queryFn: () => fetchPackages(page, limit, debouncedDestination),
     keepPreviousData: true,
   });
@@ -57,7 +108,6 @@ const PackageSection = ({ limit = 8 }) => {
   const packages = data?.packages ?? [];
   const totalPages = data?.totalPages ?? 1;
 
-  // Animations
   const containerVariants = {
     hidden: {},
     visible: {
@@ -107,8 +157,8 @@ const PackageSection = ({ limit = 8 }) => {
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
               className="w-full pl-11 pr-4 py-3 rounded-xl border border-gray-600 bg-(--bg-card) text-white 
-  focus:outline-none focus:border-(--gold-main) focus:ring-1 focus:ring-(--gold-main)
-  transition-all duration-300"
+              focus:outline-none focus:border-(--gold-main) focus:ring-1 focus:ring-(--gold-main)
+              transition-all duration-300"
             />
           </div>
         </motion.div>
@@ -143,8 +193,8 @@ const PackageSection = ({ limit = 8 }) => {
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-12">
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-                disabled={!data?.previous}
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page <= 1 || !data?.previous}
                 className="px-6 py-2 rounded-lg border border-(--gold-main) text-(--gold-main)
                 hover:bg-(--gold-main) hover:text-black transition disabled:opacity-40"
               >
@@ -157,10 +207,8 @@ const PackageSection = ({ limit = 8 }) => {
 
               <motion.button
                 whileTap={{ scale: 0.95 }}
-                onClick={() =>
-                  setPage((prev) => Math.min(prev + 1, totalPages))
-                }
-                disabled={!data?.next}
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page >= totalPages || !data?.next}
                 className="px-6 py-2 rounded-lg bg-(--gold-main) text-black
                 hover:opacity-90 transition disabled:opacity-40"
               >

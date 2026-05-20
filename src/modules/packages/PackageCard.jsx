@@ -1,11 +1,15 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const PackageCard = ({ pkg }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const packageSlug = pkg.slug || pkg.Slug || pkg.tour_slug || pkg.package_slug;
+
+  // ✅ This keeps current page, example: /packages?page=3
+  const backUrl = `${location.pathname}${location.search}`;
 
   const handleCardClick = () => {
     if (!packageSlug) {
@@ -13,7 +17,11 @@ const PackageCard = ({ pkg }) => {
       return;
     }
 
-    navigate(`/packages/${packageSlug}`);
+    navigate(`/packages/${packageSlug}`, {
+      state: {
+        from: backUrl,
+      },
+    });
   };
 
   return (
@@ -41,7 +49,6 @@ const PackageCard = ({ pkg }) => {
 
         <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/30 to-transparent" />
 
-        {/* Rating */}
         <div className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-semibold bg-linear-to-r from-start to-end text-black shadow-lg">
           ⭐ {pkg.rating}
         </div>
@@ -72,6 +79,7 @@ const PackageCard = ({ pkg }) => {
 
           <Link
             to={`/packages/${packageSlug}`}
+            state={{ from: backUrl }}
             onClick={(e) => e.stopPropagation()}
           >
             <span className="px-4 py-2 rounded-full text-sm font-semibold bg-linear-to-r from-start to-end text-black shadow-lg group-hover:scale-105 transition">

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { privateApi, publicApi } from "../../services/api";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,7 +16,17 @@ const fetchPackage = async (slug) => {
 
 const PackageDetails = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { slug } = useParams();
+
+  const handleBack = () => {
+    if (location.state?.from) {
+      navigate(location.state.from);
+      return;
+    }
+
+    navigate("/packages");
+  };
 
   const [openItinerary, setOpenItinerary] = useState(false);
   const [openInclusions, setOpenInclusions] = useState(false);
@@ -171,10 +181,10 @@ const PackageDetails = () => {
             </h1>
 
             <button
-              onClick={() => navigate("/packages")}
+              onClick={handleBack}
               className="px-5 py-3 rounded-xl bg-(--gold-main) text-black font-semibold"
             >
-              Back to Packages
+              Go Back
             </button>
           </div>
         </div>
@@ -350,10 +360,10 @@ Please share more details.
         {/* HERO / PREMIUM IMAGE GALLERY */}
         <div className="max-w-7xl mx-auto px-4 pt-26">
           <button
-            onClick={() => navigate("/packages")}
+            onClick={handleBack}
             className="mb-4 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm"
           >
-            ← Back to Packages
+            ← Back
           </button>
 
           <h1 className="text-2xl md:text-4xl font-(--font-hero) text-(--gold-main) mb-2">
@@ -493,7 +503,6 @@ Please share more details.
               </p>
             </div>
           </motion.div>
-
         </div>
 
         {/* CONTENT */}
