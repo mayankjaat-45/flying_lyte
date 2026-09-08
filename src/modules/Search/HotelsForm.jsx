@@ -102,12 +102,12 @@ const isInternationalDestination = (cityName = "", countryName = "") => {
   }
 
   return INTERNATIONAL_DESTINATION_KEYWORDS.some((keyword) => {
-  const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const regex = new RegExp(`\\b${escapedKeyword}\\b`, "i");
+    const escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(`\\b${escapedKeyword}\\b`, "i");
 
-  return regex.test(city);
-});
-}; 
+    return regex.test(city);
+  });
+};
 const createRoom = () => ({
   adults: 1,
   children: 0,
@@ -156,8 +156,8 @@ const normalizeHotelSearchResponse = (payload) => {
 
   const nestedData =
     payload?.data &&
-    typeof payload.data === "object" &&
-    !Array.isArray(payload.data)
+      typeof payload.data === "object" &&
+      !Array.isArray(payload.data)
       ? payload.data
       : null;
 
@@ -474,8 +474,7 @@ const HotelsForm = () => {
 
         if (!age || age < MIN_CHILD_AGE || age > MAX_CHILD_AGE) {
           setErrorMsg(
-            `Room ${roomIndex + 1}: enter valid child ${
-              childIndex + 1
+            `Room ${roomIndex + 1}: enter valid child ${childIndex + 1
             } age between 1 and 12`,
           );
           return false;
@@ -864,9 +863,8 @@ const HotelsForm = () => {
               }));
               setNationalitySuggestions(searchNationalities(value));
             }}
-            className={`w-full h-12 px-4 rounded-2xl text-sm bg-(--bg-secondary) border border-(--border-soft) outline-none focus:border-(--gold-main) focus:ring-2 focus:ring-(--gold-main)/20 transition ${
-              isInternationalHotelSearch ? "cursor-not-allowed opacity-80" : ""
-            }`}
+            className={`w-full h-12 px-4 rounded-2xl text-sm bg-(--bg-secondary) border border-(--border-soft) outline-none focus:border-(--gold-main) focus:ring-2 focus:ring-(--gold-main)/20 transition ${isInternationalHotelSearch ? "cursor-not-allowed opacity-80" : ""
+              }`}
           />
 
           {isInternationalHotelSearch && (
@@ -932,7 +930,7 @@ const HotelsForm = () => {
                   checkIn: e.target.value,
                 }))
               }
-              className="w-full h-12 px-4 rounded-2xl text-sm bg-(--bg-secondary) border border-(--border-soft) outline-none focus:border-(--gold-main) focus:ring-2 focus:ring-(--gold-main)/20 transition"
+              className="hotel-date-input w-full h-12 px-4 pr-10 rounded-2xl text-sm bg-(--bg-secondary) border border-(--border-soft) outline-none focus:border-(--gold-main) focus:ring-2 focus:ring-(--gold-main)/20 transition"
             />
           </div>
 
@@ -951,7 +949,7 @@ const HotelsForm = () => {
                   checkOut: e.target.value,
                 }))
               }
-              className="w-full h-12 px-4 rounded-2xl text-sm bg-(--bg-secondary) border border-(--border-soft) outline-none focus:border-(--gold-main) focus:ring-2 focus:ring-(--gold-main)/20 transition"
+              className="hotel-date-input w-full h-12 px-4 pr-10 rounded-2xl text-sm bg-(--bg-secondary) border border-(--border-soft) outline-none focus:border-(--gold-main) focus:ring-2 focus:ring-(--gold-main)/20 transition"
             />
           </div>
         </div>

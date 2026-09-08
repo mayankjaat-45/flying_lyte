@@ -7,17 +7,23 @@
   /* Fonts */
   /* ===================== */
 
-  --font-body: "Oswald", sans-serif;          /* Body text */
-  --font-heading: "fugaz One", sans-serif;    /* Section headings */
-  --font-logo: "Titan One", sans-serif;        /* Logo / brand */
-  --font-hero: "Anton", sans-serif;            /* Hero headlines */
+  --font-body: "Oswald", sans-serif;
+  /* Body text */
+  --font-heading: "fugaz One", sans-serif;
+  /* Section headings */
+  --font-logo: "Titan One", sans-serif;
+  /* Logo / brand */
+  --font-hero: "Anton", sans-serif;
+  /* Hero headlines */
 
   /* ===================== */
   /* Dark Backgrounds */
   /* ===================== */
 
-  --bg-main: #0b0f14;        /* Main app background */
-  --bg-card: #121821;        /* Cards */
+  --bg-main: #0b0f14;
+  /* Main app background */
+  --bg-card: #121821;
+  /* Cards */
   --bg-primary: #1c1c1a;
   --bg-secondary: #181818;
   --bg-via: #242420;
@@ -26,10 +32,14 @@
   /* Dark Gold Palette */
   /* ===================== */
 
-  --gold-dark: #b08d3a;     /* Logo + H1 */
-  --gold-main: #c9a24d;     /* Headings */
-  --gold-soft: #d6b96c;     /* Sub-headings */
-  --gold-shadow: #8f6b1f;   /* Depth / gradient end */
+  --gold-dark: #b08d3a;
+  /* Logo + H1 */
+  --gold-main: #c9a24d;
+  /* Headings */
+  --gold-soft: #d6b96c;
+  /* Sub-headings */
+  --gold-shadow: #8f6b1f;
+  /* Depth / gradient end */
 
   /* Gold Gradient */
   --color-start: #f8de82;
@@ -58,3 +68,24 @@
 }
 
 
+.hotel-date-input {
+  position: relative;
+  color-scheme: dark;
+  padding-right: 42px !important;
+}
+
+.hotel-date-input::-webkit-calendar-picker-indicator {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  opacity: 1;
+  cursor: pointer;
+
+  filter: invert(78%) sepia(83%) saturate(522%) hue-rotate(357deg) brightness(103%) contrast(96%);
+}
+
+.hotel-date-input::-webkit-calendar-picker-indicator:hover {
+  transform: translateY(-50%) scale(1.08);
+}
