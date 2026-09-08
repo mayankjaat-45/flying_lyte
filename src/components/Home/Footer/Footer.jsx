@@ -13,6 +13,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Footer = () => {
   const navigate = useNavigate();
+  const paymentMethods = [
+    { name: "Google Pay", image: "/images/payments/gpay.jpeg" },
+    { name: "Maestro", image: "/images/payments/maestro.jpeg" },
+    { name: "Mastercard", image: "/images/payments/mastercard.jpeg" },
+    { name: "Online Shopping", image: "/images/payments/onlineshoping.jpeg" },
+    { name: "PayPal", image: "/images/payments/paypal.jpeg" },
+    { name: "Visa", image: "/images/payments/visa.jpeg" },
+  ];
 
   return (
     <footer className="bg-gray-900 text-gray-300">
@@ -69,6 +77,13 @@ const Footer = () => {
               >
                 <Phone size={16} /> Chat on WhatsApp
               </a>
+
+
+              {/* GST Number */}
+              <div className="flex items-center gap-2 text-gray-400">
+                <span className="font-medium text-gray-300">GSTIN:</span>
+                <span>07AALFF0579Q1ZP</span>
+              </div>
             </div>
           </div>
 
@@ -95,6 +110,27 @@ const Footer = () => {
           ))}
         </div>
 
+
+        {/* We Accept */}
+        <div className="flex items-center justify-end gap-2 mb-5">
+          <span className="text-sm font-semibold text-white mr-1">
+            WE ACCEPT:
+          </span>
+
+          {paymentMethods.map((payment) => (
+            <div
+              key={payment.name}
+              className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden"
+            >
+              <img
+                src={payment.image}
+                alt={payment.name}
+                className="w-full h-full object-contain p-1"
+              />
+            </div>
+          ))}
+        </div>
+
         {/* Divider */}
         <div className="border-t border-gray-800 mt-10 pt-6">
           {/* Bottom Bar */}
@@ -103,37 +139,62 @@ const Footer = () => {
               © 2024 FlyingLyte. All rights reserved.
             </p>
 
-            {/* Social Icons */}
-            <div className="flex gap-5">
-              <a
-                href="https://www.facebook.com/Flying-Lyte/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="hover:text-white active:text-white transition"
-              >
-                <Facebook size={18} />
-              </a>
+            {/* Payment + Social Icons */}
+            <div className="flex flex-col items-center md:items-end gap-4">
 
-              <a
-                href="https://www.instagram.com/flying_lyte/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="hover:text-white active:text-white transition"
-              >
-                <Instagram size={18} />
-              </a>
+              {/* We Accept */}
+              {/* <div className="flex flex-wrap items-center justify-center md:justify-end gap-2">
+                <span className="text-sm font-semibold text-white mr-1">
+                  WE ACCEPT:
+                </span>
 
-              <a
-                href="https://twitter.com/yourusername"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Twitter"
-                className="hover:text-white active:text-white transition"
-              >
-                <Twitter size={18} />
-              </a>
+                {paymentMethods.map((payment) => (
+                  <div
+                    key={payment.name}
+                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden"
+                  >
+                    <img
+                      src={payment.image}
+                      alt={payment.name}
+                      className="w-full h-full object-contain p-1"
+                    />
+                  </div>
+                ))}
+              </div> */}
+
+              {/* Social Icons */}
+              <div className="flex gap-5">
+                <a
+                  href="https://www.facebook.com/Flying-Lyte/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="hover:text-white active:text-white transition"
+                >
+                  <Facebook size={18} />
+                </a>
+
+                <a
+                  href="https://www.instagram.com/flying_lyte/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="hover:text-white active:text-white transition"
+                >
+                  <Instagram size={18} />
+                </a>
+
+                <a
+                  href="https://twitter.com/yourusername"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Twitter"
+                  className="hover:text-white active:text-white transition"
+                >
+                  <Twitter size={18} />
+                </a>
+              </div>
+
             </div>
           </div>
 
