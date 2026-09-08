@@ -1,6 +1,9 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
-export const useHotelStore = create((set) => ({
+export const useHotelStore = create(
+  persist(
+    (set) => ({
   /* ===================== */
   /* 🔍 SEARCH */
   /* ===================== */
@@ -145,7 +148,7 @@ export const useHotelStore = create((set) => ({
   /* ===================== */
   /* 🔁 RESET FLOW */
   /* ===================== */
-  resetFlow: () =>
+    resetFlow: () =>
     set(() => ({
       hotels: [],
       selectedHotel: null,
@@ -157,4 +160,13 @@ export const useHotelStore = create((set) => ({
       loading: false,
       error: null,
     })),
-}));
+    }),
+    {
+      name: "flyinglyte-hotel-search",
+
+      partialize: (state) => ({
+        search: state.search,
+      }),
+    },
+  ),
+);

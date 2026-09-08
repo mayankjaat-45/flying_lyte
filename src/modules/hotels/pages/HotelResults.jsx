@@ -283,10 +283,10 @@ const normalizeHotel = (hotel = {}) => {
 
     rating: Number(
       hotel.rating ||
-        hotel.StarRating ||
-        rawHotel?.StarRating ||
-        hotel.star_rating ||
-        4,
+      hotel.StarRating ||
+      rawHotel?.StarRating ||
+      hotel.star_rating ||
+      4,
     ),
 
     rooms,
@@ -391,6 +391,7 @@ const getVisiblePageNumbers = (currentPage, totalPages) => {
 const HotelResults = () => {
   const navigate = useNavigate();
 
+
   const { hotels, search, setSelectedHotel, setSelectedRoom, selectHotelRoom } =
     useHotelStore();
 
@@ -444,8 +445,8 @@ const HotelResults = () => {
     0,
     Number(
       hotelResponse?.count ||
-        hotelResponse?.total_tbo_hotels_found ||
-        hotelList.length,
+      hotelResponse?.total_tbo_hotels_found ||
+      hotelList.length,
     ),
   );
 
@@ -477,6 +478,26 @@ const HotelResults = () => {
   const [mealType, setMealType] = useState("all");
   const [showFilters, setShowFilters] = useState(false);
   const [pageLoading, setPageLoading] = useState(false);
+  const [restoreLoading, setRestoreLoading] = useState(() => {
+    if (typeof window === "undefined") return false;
+
+    const savedSearch = localStorage.getItem("hotelSearchPayload");
+
+    const currentHotels = useHotelStore.getState().hotels;
+
+    const existingHotels = Array.isArray(currentHotels)
+      ? currentHotels
+      : currentHotels?.results ||
+      currentHotels?.HotelResult ||
+      currentHotels?.hotels ||
+      currentHotels?.data?.results ||
+      [];
+
+    return (
+      Boolean(savedSearch) &&
+      (!Array.isArray(existingHotels) || existingHotels.length === 0)
+    );
+  });
   const [paginationError, setPaginationError] = useState("");
   const [hotelSearch, setHotelSearch] = useState("");
   const [selectedHotelCode, setSelectedHotelCode] = useState("");
@@ -490,7 +511,112 @@ const HotelResults = () => {
    * we don't want to lose the original 150 dropdown options.
    */
   const [allHotelOptions, setAllHotelOptions] = useState([]);
+  useEffect(() => {
+    const restoreHotelsAfterRefresh = async () => {
+      const currentHotels = useHotelStore.getState().hotels;
 
+      const existingHotels = Array.isArray(currentHotels)
+        ? currentHotels
+        : currentHotels?.results ||
+        currentHotels?.HotelResult ||
+        currentHotels?.hotels ||
+        currentHotels?.data?.results ||
+        [];
+
+      // Normal search se hotels already hain to API dobara call nahi hogi
+      if (Array.isArray(existingHotels) && existingHotels.length > 0) {
+        return;
+      }
+
+      const savedSearchString = localStorage.getItem("hotelSearchPayload");
+
+      if (!savedSearchString) {
+        console.log("NO SAVED HOTEL SEARCH FOUND");
+        return;
+      }
+
+      let savedSearch;
+
+      try {
+        savedSearch = JSON.parse(savedSearchString);
+      } catch (error) {
+        console.error("INVALID SAVED HOTEL SEARCH:", error);
+        return;
+      }
+
+      const savedParams = savedSearch?.requestParams;
+
+      if (!savedParams || !savedParams.city) {
+        console.log("SAVED HOTEL PARAMS NOT AVAILABLE:", savedSearch);
+        return;
+      }
+
+      try {
+        setRestoreLoading(true);
+        setPageLoading(true);
+        setPaginationError("");
+
+        // Search header restore
+        useHotelStore.setState({
+          search: savedSearch,
+        });
+
+        const params = {
+          ...savedParams,
+          page: Number(savedParams?.page || 1),
+          page_size: Number(
+            savedParams?.page_size || savedSearch?.pageSize || 20,
+          ),
+        };
+
+        console.log("REFRESH HOTEL API PARAMS:", params);
+
+        const response = await publicApi.get(
+          savedSearch?.requestEndpoint || "/api/hotels/search-hotels/",
+          {
+            params,
+          },
+        );
+
+        console.log("REFRESH HOTEL API RESPONSE:", response.data);
+
+        let responseData = response.data;
+
+        if (
+          responseData?.data &&
+          typeof responseData.data === "object" &&
+          !Array.isArray(responseData.data)
+        ) {
+          responseData = {
+            ...responseData,
+            ...responseData.data,
+          };
+        }
+
+        useHotelStore.setState({
+          search: savedSearch,
+          hotels: responseData,
+        });
+      } catch (error) {
+        console.error(
+          "HOTEL REFRESH RESTORE ERROR:",
+          error?.response?.data || error,
+        );
+
+        setPaginationError(
+          error?.response?.data?.error ||
+          error?.response?.data?.message ||
+          error?.message ||
+          "Unable to restore hotel search.",
+        );
+      } finally {
+        setPageLoading(false);
+        setRestoreLoading(false);
+      }
+    };
+
+    restoreHotelsAfterRefresh();
+  }, []);
   useEffect(() => {
     if (
       Array.isArray(hotelResponse?.hotel_options) &&
@@ -613,9 +739,9 @@ const HotelResults = () => {
 
         setPaginationError(
           error?.response?.data?.error ||
-            error?.response?.data?.message ||
-            error?.message ||
-            "Unable to load selected hotel.",
+          error?.response?.data?.message ||
+          error?.message ||
+          "Unable to load selected hotel.",
         );
       } finally {
         setHotelFilterLoading(false);
@@ -684,9 +810,9 @@ const HotelResults = () => {
 
       setPaginationError(
         error?.response?.data?.error ||
-          error?.response?.data?.message ||
-          error?.message ||
-          "Unable to clear hotel filter.",
+        error?.response?.data?.message ||
+        error?.message ||
+        "Unable to clear hotel filter.",
       );
     } finally {
       setHotelFilterLoading(false);
@@ -732,26 +858,26 @@ const HotelResults = () => {
           const paxRooms =
             roomGuests.length > 0
               ? roomGuests.map((room) => {
-                  const children = Number(room.Children ?? room.children ?? 0);
+                const children = Number(room.Children ?? room.children ?? 0);
 
-                  const ages =
-                    room.ChildrenAges || room.ChildAges || room.childAges || [];
+                const ages =
+                  room.ChildrenAges || room.ChildAges || room.childAges || [];
 
-                  return {
-                    Adults: Number(room.Adults ?? room.adults ?? 1),
-                    Children: children,
-                    ChildrenAges: ages.slice(0, children).map(Number),
-                  };
-                })
+                return {
+                  Adults: Number(room.Adults ?? room.adults ?? 1),
+                  Children: children,
+                  ChildrenAges: ages.slice(0, children).map(Number),
+                };
+              })
               : [
-                  {
-                    Adults: Number(guests?.adults || 1),
-                    Children: Number(guests?.children || 0),
-                    ChildrenAges: Array.isArray(guests?.childAges)
-                      ? guests.childAges.map(Number)
-                      : [],
-                  },
-                ];
+                {
+                  Adults: Number(guests?.adults || 1),
+                  Children: Number(guests?.children || 0),
+                  ChildrenAges: Array.isArray(guests?.childAges)
+                    ? guests.childAges.map(Number)
+                    : [],
+                },
+              ];
 
           params = {
             city:
@@ -827,9 +953,9 @@ const HotelResults = () => {
 
         setPaginationError(
           error?.response?.data?.error ||
-            error?.response?.data?.message ||
-            error?.message ||
-            "Unable to load hotels.",
+          error?.response?.data?.message ||
+          error?.message ||
+          "Unable to load hotels.",
         );
       } finally {
         setPageLoading(false);
@@ -905,28 +1031,28 @@ const HotelResults = () => {
 
       const safeRoomGuests = Array.isArray(search?.guests?.roomGuests)
         ? search.guests.roomGuests.map((room, index) => {
-            const children = Number(room.Children ?? room.children ?? 0);
+          const children = Number(room.Children ?? room.children ?? 0);
 
-            const ages =
-              room.ChildrenAges || room.ChildAges || room.childAges || [];
+          const ages =
+            room.ChildrenAges || room.ChildAges || room.childAges || [];
 
-            const cleanAges = ages
-              .slice(0, children)
-              .map((age) => Number(age))
-              .filter((age) => age >= 1 && age <= 12);
+          const cleanAges = ages
+            .slice(0, children)
+            .map((age) => Number(age))
+            .filter((age) => age >= 1 && age <= 12);
 
-            return {
-              roomIndex: room.roomIndex ?? room.RoomIndex ?? index + 1,
-              RoomIndex: room.RoomIndex ?? room.roomIndex ?? index + 1,
-              adults: Number(room.adults ?? room.Adults ?? 1),
-              Adults: Number(room.Adults ?? room.adults ?? 1),
-              children,
-              Children: children,
-              childAges: cleanAges,
-              ChildAges: cleanAges,
-              ChildrenAges: cleanAges,
-            };
-          })
+          return {
+            roomIndex: room.roomIndex ?? room.RoomIndex ?? index + 1,
+            RoomIndex: room.RoomIndex ?? room.roomIndex ?? index + 1,
+            adults: Number(room.adults ?? room.Adults ?? 1),
+            Adults: Number(room.Adults ?? room.adults ?? 1),
+            children,
+            Children: children,
+            childAges: cleanAges,
+            ChildAges: cleanAges,
+            ChildrenAges: cleanAges,
+          };
+        })
         : [];
 
       const safeChildAges = safeRoomGuests.flatMap((room) => room.ChildrenAges);
@@ -1064,9 +1190,22 @@ const HotelResults = () => {
             </div>
           )}
 
-          {filteredHotels.length === 0 ? (
+          {restoreLoading ? (
+            <div className="bg-[#15151C] min-h-64 p-10 rounded-2xl border border-gray-800 flex flex-col items-center justify-center">
+              <div className="w-10 h-10 rounded-full border-4 border-gray-700 border-t-yellow-400 animate-spin" />
+
+              <p className="mt-4 text-base font-semibold text-yellow-300">
+                Loading hotels...
+              </p>
+
+              <p className="mt-1 text-sm text-gray-500">
+                Please wait while we restore your hotel search.
+              </p>
+            </div>
+          ) : filteredHotels.length === 0 ? (
             <div className="bg-[#15151C] p-10 rounded-2xl text-center border border-gray-800">
               <p className="text-lg text-gray-300">No hotels found</p>
+
               <p className="text-sm text-gray-500 mt-2">
                 Try changing price, rating or refundable filters.
               </p>
@@ -1338,10 +1477,9 @@ const PaginationBar = ({
               className={`
                 min-w-10 h-10 px-3 rounded-xl
                 border text-sm font-medium transition
-                ${
-                  currentPage === pageNumber
-                    ? "bg-yellow-400 text-black border-yellow-400"
-                    : "bg-[#0B0B0F] text-gray-300 border-gray-700 hover:border-yellow-400 hover:text-yellow-300"
+                ${currentPage === pageNumber
+                  ? "bg-yellow-400 text-black border-yellow-400"
+                  : "bg-[#0B0B0F] text-gray-300 border-gray-700 hover:border-yellow-400 hover:text-yellow-300"
                 }
                 ${pageLoading ? "cursor-wait" : ""}
               `}
