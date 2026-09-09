@@ -22,33 +22,40 @@ const HotelBookings = () => {
     );
 
   return (
-    <div className="p-4 sm:p-6">
+    <div className="w-full min-w-0 overflow-x-hidden p-3 sm:p-6">
       <h2 className="text-xl sm:text-2xl font-semibold text-white mb-6">
         My Bookings
       </h2>
 
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {confirmedBookings.map((b) => {
           return (
             <div
               key={b.id}
-              className="bg-linear-to-br from-[#111] to-[#1a1a1a] 
-              border border-white/10 rounded-2xl p-5 
-              shadow-lg hover:shadow-xl hover:scale-[1.02] 
-              transition-all duration-300 space-y-4"
+              className="
+  w-full min-w-0 max-w-full overflow-hidden
+  space-y-4 rounded-2xl
+  border border-white/10
+  bg-linear-to-br from-[#111] to-[#1a1a1a]
+  p-4 sm:p-5
+  shadow-lg
+  transition-all duration-300
+  sm:hover:scale-[1.02] sm:hover:shadow-xl
+"
             >
               {/* Header */}
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-400">
+              <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
+                <span className="min-w-0 flex-1 break-all text-xs text-gray-400">
                   Booking ID: {b.booking_id || "N/A"}
                 </span>
-                <span className="text-green-400 text-xs font-semibold bg-green-400/10 px-2 py-1 rounded-full">
+
+                <span className="shrink-0 rounded-full bg-green-400/10 px-2.5 py-1 text-xs font-semibold text-green-400">
                   CONFIRMED
                 </span>
               </div>
 
               {/* Booking Code */}
-              <p className="text-xs text-gray-500 break-all">
+              <p className="w-full max-w-full [overflow-wrap:anywhere] text-xs leading-5 text-gray-500">
                 {b.booking_code}
               </p>
 
@@ -62,14 +69,13 @@ const HotelBookings = () => {
                   {b.passengers?.map((p, index) => (
                     <div
                       key={index}
-                      className={`flex justify-between items-center text-sm p-2 rounded-lg ${
-                        p.LeadPassenger
-                          ? "bg-green-400/10 border border-green-400/20"
-                          : "bg-white/5"
-                      }`}
+                      className={`flex min-w-0 items-center justify-between gap-2 rounded-lg p-2 text-sm ${p.LeadPassenger
+                        ? "bg-green-400/10 border border-green-400/20"
+                        : "bg-white/5"
+                        }`}
                     >
-                      <div>
-                        <p className="text-white">
+                      <div className="min-w-0 flex-1">
+                        <p className="break-words text-white">
                           {[p.Title, p.FirstName, p.LastName]
                             .filter(Boolean)
                             .join(" ")}
@@ -80,7 +86,7 @@ const HotelBookings = () => {
                       </div>
 
                       {p.LeadPassenger && (
-                        <span className="text-xs text-green-400">Lead</span>
+                        <span className="shrink-0 text-xs text-green-400">Lead</span>
                       )}
                     </div>
                   ))}
@@ -88,7 +94,7 @@ const HotelBookings = () => {
               </div>
 
               {/* Info Row */}
-              <div className="grid grid-cols-2 gap-3 text-sm">
+              <div className="grid grid-cols-1 gap-3 text-sm sm:grid-cols-2">
                 <div>
                   <p className="text-gray-400">Nationality</p>
                   <p className="text-white font-medium">
@@ -108,25 +114,31 @@ const HotelBookings = () => {
               <div className="border-t border-white/10" />
 
               {/* Booking Details */}
-              <div className="text-sm space-y-1">
+              <div className="min-w-0 space-y-2 text-sm">
                 {b.confirmation_no && (
                   <p>
                     <span className="text-gray-400">Confirmation:</span>{" "}
-                    <span className="text-white">{b.confirmation_no}</span>
+                    <span className="break-all text-white">
+                      {b.confirmation_no}
+                    </span>
                   </p>
                 )}
 
                 {b.booking_ref_no && (
-                  <p>
+                  <p className="min-w-0 break-words">
                     <span className="text-gray-400">Ref No:</span>{" "}
-                    <span className="text-white">{b.booking_ref_no}</span>
+                    <span className="[overflow-wrap:anywhere] text-white">
+                      {b.booking_ref_no}
+                    </span>
                   </p>
                 )}
 
                 {b.invoice_number && (
                   <p>
                     <span className="text-gray-400">Invoice:</span>{" "}
-                    <span className="text-white">{b.invoice_number}</span>
+                    <span className="break-all text-white">
+                      {b.invoice_number}
+                    </span>
                   </p>
                 )}
 
